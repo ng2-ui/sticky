@@ -15,10 +15,10 @@
     rxjs: { defaultExtension: 'js' }
   };
 
-  map['my-npm'] = '../dist';
-  packages['my-npm'] = {main: 'index.js', defaultExtension: 'js'};
-  map['my-npm'] = '../src';
-  packages['my-npm'] = {main: 'index.ts', defaultExtension: 'ts'};
+  map['ng2-sticky'] = '../dist';
+  packages['ng2-sticky'] = {main: 'index.js', defaultExtension: 'js'};
+  map['ng2-sticky'] = '../src';
+  packages['ng2-sticky'] = {main: 'index.ts', defaultExtension: 'ts'};
 
   System.config({
     transpiler: 'typescript', //use typescript for compilation
