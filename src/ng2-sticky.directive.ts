@@ -17,7 +17,6 @@ export class Ng2StickyDirective {
   original: any;
 
   constructor(el: ElementRef) {
-    console.log('constructor is called');
     this.sticky = el.nativeElement;
     this.parent = el.nativeElement.parentNode;
 
@@ -27,7 +26,9 @@ export class Ng2StickyDirective {
 
   ngAfterViewInit() {
     // set to relatively positioned
-    if (['absolute', 'fixed', 'relative'].indexOf(computedStyle(this.el, 'position')) !== -1) { //inherit, initial, unset
+    let allowedPositions = ['absolute', 'fixed', 'relative'];
+    let parentElPosition = computedStyle(this.parentEl, 'position');
+    if (allowedPositions.indexOf(parentElPosition) === -1) { //inherit, initial, unset
       this.parentEl.style.position = 'relative';
     }
 
@@ -56,13 +57,11 @@ export class Ng2StickyDirective {
   }
 
   attach() {
-    console.log('sticky element attach is called');
     window.addEventListener('scroll', this.scrollHandler);
     window.addEventListener('resize', this.scrollHandler);
   }
 
   detach() {
-    console.log('sticky element detach is called');
     window.removeEventListener('scroll', this.scrollHandler);
     window.removeEventListener('resize', this.scrollHandler);
   }
