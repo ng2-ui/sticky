@@ -44,7 +44,7 @@ export class Ng2StickyDirective {
       top:  computedStyle(this.el, 'top'),
       bottom:  computedStyle(this.el, 'bottom'),
       left: computedStyle(this.el, 'left'),
-      width: getStyle(this.el, 'width'),
+      width: computedStyle(this.el, 'width'),
       offsetTop: this.el.offsetTop,
       offsetLeft: this.el.offsetLeft,
       marginTop: parseInt(computedStyle(this.el, 'marginTop')),
