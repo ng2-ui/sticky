@@ -89,7 +89,8 @@ export class Ng2StickyDirective {
     /**
      * stikcy element reached to the bottom of the container
      */
-    if (parentRect.bottom <= this.original.marginTop + this.original.boundingClientRect.height + this.original.marginBottom ) {
+    if (this.original.marginTop + this.original.marginBottom 
+    + this.original.boundingClientRect.height + this.stickyOffsetTop >= parentRect.bottom) {
       // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
       let floatAdjustment = 
         this.original.float === "right" ? {right: 0} :
