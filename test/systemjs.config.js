@@ -2,7 +2,8 @@
   var map = {
     app: ".",
     '@angular': '../node_modules/@angular',
-    'rxjs': '../node_modules/rxjs'
+    'rxjs': '../node_modules/rxjs',
+    'ng2-utils': '../node_modules/ng2-utils'
   };
   var packages = {
     app: { main: './main.ts', defaultExtension: 'ts' },
@@ -12,6 +13,7 @@
     '@angular/common': { main: 'bundles/common.umd.js', defaultExtension: 'js' },
     '@angular/platform-browser-dynamic': { main: 'bundles/platform-browser-dynamic.umd.js', defaultExtension: 'js' },
     '@angular/platform-browser': { main: 'bundles/platform-browser.umd.js', defaultExtension: 'js' },
+    'ng2-utils': {main: 'dist/index.js',  defaultExtension: 'js' },
     rxjs: { defaultExtension: 'js' }
   };
 

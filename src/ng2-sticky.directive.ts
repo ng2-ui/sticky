@@ -1,7 +1,7 @@
 'use strict';
 
 import { Directive, ElementRef } from '@angular/core';
-import { getElementVisibleIn, getStyle } from './util';
+import { computedStyle } from 'ng2-utils';
 
 @Directive({
   selector: '[ng2-sticky]'
@@ -27,7 +27,7 @@ export class Ng2StickyDirective {
 
   ngAfterViewInit() {
     // set to relatively positoined
-    if (['absolute', 'fixed', 'relative'].indexOf(getStyle(this.el, 'position') !== -1)) { //inherit, initial, unset
+    if (['absolute', 'fixed', 'relative'].indexOf(computedStyle(this.el, 'position') !== -1)) { //inherit, initial, unset
       this.parentEl.style.position = 'relative';
     }
 
@@ -39,16 +39,16 @@ export class Ng2StickyDirective {
     let elRect = this.el.getBoundingClientRect();
     this.original = {
       boundingClientRect: elRect,
-      position: getStyle(this.el, 'position'),
-      float: getStyle(this.el, 'float'),
-      top:  getStyle(this.el, 'top'),
-      bottom:  getStyle(this.el, 'bottom'),
-      left: getStyle(this.el, 'left'),
+      position: computedStyle(this.el, 'position'),
+      float: computedStyle(this.el, 'float'),
+      top:  computedStyle(this.el, 'top'),
+      bottom:  computedStyle(this.el, 'bottom'),
+      left: computedStyle(this.el, 'left'),
       offsetTop: this.el.offsetTop,
       offsetLeft: this.el.offsetLeft,
-      marginTop: parseInt(getStyle(this.el, 'marginTop')),
-      marginBottom: parseInt(getStyle(this.el, 'marginBottom')),
-      marginLeft: parseInt(getStyle(this.el, 'marginLeft'))
+      marginTop: parseInt(computedStyle(this.el, 'marginTop')),
+      marginBottom: parseInt(computedStyle(this.el, 'marginBottom')),
+      marginLeft: parseInt(computedStyle(this.el, 'marginLeft'))
     };
 
     this.attach();
@@ -69,8 +69,6 @@ export class Ng2StickyDirective {
   scrollHandler = () => {
     let elRect = this.el.getBoundingClientRect();
     let parentRect = this.el.parentElement.getBoundingClientRect();
-    // let parentElVisible = getElementVisibleIn(this.parentEl, window);
-    // let elVisible       = getElementVisibleIn(this.el, this.parentEl);
 
     if (parentRect.top < 0 && parentRect.bottom > 0) {
       /**
