@@ -25,7 +25,8 @@ export class Ng2StickyDirective {
   }
 
   ngAfterViewInit() {
-    // set to relatively positioned
+    this.el.style.boxSizing = 'border-box';
+    // set the parent relatively positioned
     let allowedPositions = ['absolute', 'fixed', 'relative'];
     let parentElPosition = computedStyle(this.parentEl, 'position');
     if (allowedPositions.indexOf(parentElPosition) === -1) { //inherit, initial, unset
@@ -50,7 +51,8 @@ export class Ng2StickyDirective {
       offsetLeft: this.el.offsetLeft,
       marginTop: parseInt(computedStyle(this.el, 'marginTop')),
       marginBottom: parseInt(computedStyle(this.el, 'marginBottom')),
-      marginLeft: parseInt(computedStyle(this.el, 'marginLeft'))
+      marginLeft: parseInt(computedStyle(this.el, 'marginLeft')),
+      marginRight: parseInt(computedStyle(this.el, 'marginLeft'))
     };
 
     this.attach();
@@ -69,20 +71,35 @@ export class Ng2StickyDirective {
   scrollHandler = () => {
     let elRect = this.el.getBoundingClientRect();
     let parentRect = this.el.parentElement.getBoundingClientRect();
+    let bodyRect = document.body.getBoundingClientRect();
+    let dynProps; 
 
+    if (this.original.float === "right") {
+      let right = bodyRect.right - parentRect.right + this.original.marginRight;
+      dynProps = { right: right +'px' };
+    } else if (this.original.float === "left") {
+      let left = parentRect.left - bodyRect.left + this.original.marginLeft;
+      dynProps = { left: left +'px'};
+    } else {
+      //console.log('parentRect..............', parentRect.width);
+      dynProps = {width: parentRect.width +'px'};
+    }
+    //console.log('dynProps', dynProps);
+      
     /**
      * stikcy element reached to the bottom of the container
      */
     if (parentRect.bottom <= this.original.marginTop + this.original.boundingClientRect.height + this.original.marginBottom ) {
       // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
+      let floatAdjustment = 
+        this.original.float === "right" ? {right: 0} :
+        this.original.float === "left" ? {left: 0} : {};
       Object.assign(this.el.style, {
         position: 'absolute',
         float: 'none',
         top: 'inherit',
-        bottom: 0,
-        width: this.original.width,
-        left: (this.original.offsetLeft - this.original.marginLeft) + 'px'
-      })
+        bottom: 0
+      }, dynProps, floatAdjustment)
     }
     /**
      * stikcy element is in the middle of container
@@ -93,10 +110,8 @@ export class Ng2StickyDirective {
         position: 'fixed', //fixed is a lot smoother than absolute
         float: 'none',
         top: 0,
-        bottom: 'inherit',
-        width: this.original.width,
-        left: (this.original.boundingClientRect.left - this.original.marginLeft) + 'px'
-      })
+        bottom: 'inherit'
+      }, dynProps)
     }
     /**
      * stikcy element is in the original position
@@ -110,7 +125,7 @@ export class Ng2StickyDirective {
         bottom: this.original.bottom,
         width: this.original.width,
         left: this.original.left
-      })
+      }, dynProps)
     }
   }
 }
