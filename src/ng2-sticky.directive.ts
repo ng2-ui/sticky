@@ -26,7 +26,7 @@ export class Ng2StickyDirective {
   }
 
   ngAfterViewInit() {
-    // set to relatively positoined
+    // set to relatively positioned
     if (['absolute', 'fixed', 'relative'].indexOf(computedStyle(this.el, 'position') !== -1)) { //inherit, initial, unset
       this.parentEl.style.position = 'relative';
     }
@@ -44,6 +44,7 @@ export class Ng2StickyDirective {
       top:  computedStyle(this.el, 'top'),
       bottom:  computedStyle(this.el, 'bottom'),
       left: computedStyle(this.el, 'left'),
+      width: getStyle(this.el, 'width'),
       offsetTop: this.el.offsetTop,
       offsetLeft: this.el.offsetLeft,
       marginTop: parseInt(computedStyle(this.el, 'marginTop')),
@@ -55,13 +56,13 @@ export class Ng2StickyDirective {
   }
 
   attach() {
-    console.log('attach is called');
+    console.log('sticky element attach is called');
     window.addEventListener('scroll', this.scrollHandler);
     window.addEventListener('resize', this.scrollHandler);
   }
 
   detach() {
-    console.log('detach is called');
+    console.log('sticky element detach is called');
     window.removeEventListener('scroll', this.scrollHandler);
     window.removeEventListener('resize', this.scrollHandler);
   }
@@ -70,46 +71,47 @@ export class Ng2StickyDirective {
     let elRect = this.el.getBoundingClientRect();
     let parentRect = this.el.parentElement.getBoundingClientRect();
 
-    if (parentRect.top < 0 && parentRect.bottom > 0) {
-      /**
-       * stikcy element reached to the bottom of the container
-       */
-      if (parentRect.bottom <= this.original.boundingClientRect.height + this.original.marginBottom ) {
-        console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
-        Object.assign(this.el.style, {
-          position: 'absolute',
-          float: 'none',
-          top: 'inherit',
-          bottom: 0,
-          left: (this.original.offsetLeft - this.original.marginLeft) + 'px'
-        })
-      }
-      /**
-       * stikcy element is in the middle of container
-       */
-      else if (parentRect.top * -1 > (this.original.offsetTop + this.original.marginTop)) {
-        console.log('case 2 (fixed)', parentRect.top * -1, this.original.offsetTop);
-        Object.assign(this.el.style, {
-          position: 'fixed', //fixed is a lot smoother than absolute
-          float: 'none',
-          top: 0,
-          bottom: 'inherit',
-          left: (this.original.boundingClientRect.left - this.original.marginLeft) + 'px'
-        })
-      }
-      /**
-       * stikcy element is in the original position
-       */
-      else {
-        console.log('case 3 (original)');
-        Object.assign(this.el.style, {
-          position: this.original.position,
-          float: this.original.float,
-          top: this.original.top,
-          bottom: this.original.bottom,
-          left: this.original.left
-        })
-      }
+    /**
+     * stikcy element reached to the bottom of the container
+     */
+    if (parentRect.bottom <= this.original.marginTop + this.original.boundingClientRect.height + this.original.marginBottom ) {
+      // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
+      Object.assign(this.el.style, {
+        position: 'absolute',
+        float: 'none',
+        top: 'inherit',
+        bottom: 0,
+        width: this.original.width,
+        left: (this.original.offsetLeft - this.original.marginLeft) + 'px'
+      })
+    }
+    /**
+     * stikcy element is in the middle of container
+     */
+    else if (parentRect.top * -1 + this.original.marginTop > this.original.offsetTop) {
+      // console.log('case 2 (fixed)', parentRect.top * -1 + this.original.marginTop, this.original.offsetTop);
+      Object.assign(this.el.style, {
+        position: 'fixed', //fixed is a lot smoother than absolute
+        float: 'none',
+        top: 0,
+        bottom: 'inherit',
+        width: this.original.width,
+        left: (this.original.boundingClientRect.left - this.original.marginLeft) + 'px'
+      })
+    }
+    /**
+     * stikcy element is in the original position
+     */
+    else {
+      // console.log('case 3 (original)');
+      Object.assign(this.el.style, {
+        position: this.original.position,
+        float: this.original.float,
+        top: this.original.top,
+        bottom: this.original.bottom,
+        width: this.original.width,
+        left: this.original.left
+      })
     }
   }
 }
