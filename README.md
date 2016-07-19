@@ -3,14 +3,6 @@
 
 https://plnkr.co/edit/ZKwAHN?p=preview
 
-
-
-https://github.com/1000ch/position-sticky
-
-<a href="https://plnkr.co/edit/Yq78qE?p=preview">
-  <img src="http://i.imgur.com/0qcxg8X.png" width="50% border="1" />
-</a>
-
 ## Install
 
 1. install ???
