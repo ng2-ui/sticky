@@ -9,40 +9,71 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var ng2_utils_1 = require('ng2-utils');
+var index_1 = require('ng2-utils/index');
 var Ng2StickyDirective = (function () {
     function Ng2StickyDirective(el) {
         var _this = this;
+        this.stickyOffsetTop = 0;
         this.scrollHandler = function () {
-            var elRect = _this.el.getBoundingClientRect();
+            // let elRect: ClientRect = this.el.getBoundingClientRect();
             var parentRect = _this.el.parentElement.getBoundingClientRect();
-            /**
-             * stikcy element reached to the bottom of the container
-             */
-            if (parentRect.bottom <= _this.original.marginTop + _this.original.boundingClientRect.height + _this.original.marginBottom) {
+            var bodyRect = document.body.getBoundingClientRect();
+            var dynProps;
+            if (_this.original.float === 'right') {
+                var right = bodyRect.right - parentRect.right + _this.original.marginRight;
+                dynProps = { right: right + 'px' };
+            }
+            else if (_this.original.float === 'left') {
+                var left = parentRect.left - bodyRect.left + _this.original.marginLeft;
+                dynProps = { left: left + 'px' };
+            }
+            else {
+                //console.log('parentRect..............', parentRect.width);
+                dynProps = { width: parentRect.width + 'px' };
+            }
+            //console.log('dynProps', dynProps);
+            if (_this.original.marginTop + _this.original.marginBottom +
+                _this.original.boundingClientRect.height + _this.stickyOffsetTop >= parentRect.bottom) {
+                /**
+                 * stikcy element reached to the bottom of the container
+                 */
                 // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
+                var floatAdjustment = _this.original.float === 'right' ? { right: 0 } :
+                    _this.original.float === 'left' ? { left: 0 } : {};
                 Object.assign(_this.el.style, {
                     position: 'absolute',
                     float: 'none',
                     top: 'inherit',
-                    bottom: 0,
-                    width: _this.original.width,
-                    left: (_this.original.offsetLeft - _this.original.marginLeft) + 'px'
-                });
+                    bottom: 0
+                }, dynProps, floatAdjustment);
             }
-            else if (parentRect.top * -1 + _this.original.marginTop > _this.original.offsetTop) {
-                // console.log('case 2 (fixed)', parentRect.top * -1 + this.original.marginTop, this.original.offsetTop);
+            else if (parentRect.top * -1 + _this.original.marginTop + _this.stickyOffsetTop > _this.original.offsetTop) {
+                /**
+                 * stikcy element is in the middle of container
+                 */
+                //console.log('case 2 (fixed)', parentRect.top * -1, this.original.marginTop, this.original.offsetTop);
+                // if not floating, add an empty filler element, since the original elements becames 'fixed'
+                if (_this.original.float !== 'left' && _this.original.float !== 'right' && !_this.fillerEl) {
+                    _this.fillerEl = document.createElement('div');
+                    _this.fillerEl.style.height = _this.el.offsetHeight + 'px';
+                    _this.parentEl.insertBefore(_this.fillerEl, _this.el);
+                }
                 Object.assign(_this.el.style, {
                     position: 'fixed',
                     float: 'none',
-                    top: 0,
-                    bottom: 'inherit',
-                    width: _this.original.width,
-                    left: (_this.original.boundingClientRect.left - _this.original.marginLeft) + 'px'
-                });
+                    top: _this.stickyOffsetTop + 'px',
+                    bottom: 'inherit'
+                }, dynProps);
             }
             else {
+                /**
+                 * stikcy element is in the original position
+                 */
                 // console.log('case 3 (original)');
+                if (_this.fillerEl) {
+                    _this.parentEl.removeChild(_this.fillerEl); //IE11 does not work with el.remove()
+                    _this.fillerEl = undefined;
+                }
                 Object.assign(_this.el.style, {
                     position: _this.original.position,
                     float: _this.original.float,
@@ -50,51 +81,60 @@ var Ng2StickyDirective = (function () {
                     bottom: _this.original.bottom,
                     width: _this.original.width,
                     left: _this.original.left
-                });
+                }, dynProps);
             }
         };
-        console.log('constructor is called');
-        this.sticky = el.nativeElement;
-        this.parent = el.nativeElement.parentNode;
-        this.el = el.nativeElement;
+        this.el = this.el = el.nativeElement;
         this.parentEl = this.el.parentElement;
     }
     Ng2StickyDirective.prototype.ngAfterViewInit = function () {
-        // set to relatively positioned
-        if (['absolute', 'fixed', 'relative'].indexOf(ng2_utils_1.computedStyle(this.el, 'position')) !== -1) {
+        this.el.style.boxSizing = 'border-box';
+        if (this.stickyAfter) {
+            var cetStickyAfterEl = document.querySelector(this.stickyAfter);
+            if (cetStickyAfterEl) {
+                this.stickyOffsetTop = cetStickyAfterEl.getBoundingClientRect().bottom;
+            }
+        }
+        // set the parent relatively positioned
+        var allowedPositions = ['absolute', 'fixed', 'relative'];
+        var parentElPosition = index_1.computedStyle(this.parentEl, 'position');
+        if (allowedPositions.indexOf(parentElPosition) === -1) {
             this.parentEl.style.position = 'relative';
         }
         this.diff = {
-            top: this.sticky.offsetTop - this.parent.offsetTop,
-            left: this.sticky.offsetLeft - this.parent.offsetLeft
+            top: this.el.offsetTop - this.parentEl.offsetTop,
+            left: this.el.offsetLeft - this.parentEl.offsetLeft
         };
         var elRect = this.el.getBoundingClientRect();
         this.original = {
             boundingClientRect: elRect,
-            position: ng2_utils_1.computedStyle(this.el, 'position'),
-            float: ng2_utils_1.computedStyle(this.el, 'float'),
-            top: ng2_utils_1.computedStyle(this.el, 'top'),
-            bottom: ng2_utils_1.computedStyle(this.el, 'bottom'),
-            left: ng2_utils_1.computedStyle(this.el, 'left'),
-            width: ng2_utils_1.computedStyle(this.el, 'width'),
+            position: index_1.computedStyle(this.el, 'position'),
+            float: index_1.computedStyle(this.el, 'float'),
+            top: index_1.computedStyle(this.el, 'top'),
+            bottom: index_1.computedStyle(this.el, 'bottom'),
+            left: index_1.computedStyle(this.el, 'left'),
+            width: index_1.computedStyle(this.el, 'width'),
             offsetTop: this.el.offsetTop,
             offsetLeft: this.el.offsetLeft,
-            marginTop: parseInt(ng2_utils_1.computedStyle(this.el, 'marginTop')),
-            marginBottom: parseInt(ng2_utils_1.computedStyle(this.el, 'marginBottom')),
-            marginLeft: parseInt(ng2_utils_1.computedStyle(this.el, 'marginLeft'))
+            marginTop: parseInt(index_1.computedStyle(this.el, 'marginTop')),
+            marginBottom: parseInt(index_1.computedStyle(this.el, 'marginBottom')),
+            marginLeft: parseInt(index_1.computedStyle(this.el, 'marginLeft')),
+            marginRight: parseInt(index_1.computedStyle(this.el, 'marginLeft'))
         };
         this.attach();
     };
     Ng2StickyDirective.prototype.attach = function () {
-        console.log('sticky element attach is called');
         window.addEventListener('scroll', this.scrollHandler);
         window.addEventListener('resize', this.scrollHandler);
     };
     Ng2StickyDirective.prototype.detach = function () {
-        console.log('sticky element detach is called');
         window.removeEventListener('scroll', this.scrollHandler);
         window.removeEventListener('resize', this.scrollHandler);
     };
+    __decorate([
+        core_1.Input('sticky-after'), 
+        __metadata('design:type', String)
+    ], Ng2StickyDirective.prototype, "stickyAfter", void 0);
     Ng2StickyDirective = __decorate([
         core_1.Directive({
             selector: '[ng2-sticky]'
