@@ -1,7 +1,7 @@
 'use strict';
 
 import { Directive, ElementRef, Input } from '@angular/core';
-import { computedStyle } from 'ng2-utils';
+import { computedStyle } from 'ng2-utils/index';
 
 @Directive({
   selector: '[ng2-sticky]'
@@ -25,8 +25,12 @@ export class Ng2StickyDirective {
 
   ngAfterViewInit(): void {
     this.el.style.boxSizing = 'border-box';
+    
     if (this.stickyAfter) {
-      this.stickyOffsetTop = document.querySelector(this.stickyAfter).getBoundingClientRect().bottom;
+      let cetStickyAfterEl = document.querySelector(this.stickyAfter);
+      if (cetStickyAfterEl) {
+        this.stickyOffsetTop = cetStickyAfterEl.getBoundingClientRect().bottom;
+      }
     }
 
     // set the parent relatively positioned
@@ -143,3 +147,4 @@ export class Ng2StickyDirective {
     }
   }
 }
+

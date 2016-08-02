@@ -1,5 +1,5 @@
 import {Component} from '@angular/core'
-import { Ng2StickyDirective } from 'ng2-sticky';
+import {Ng2StickyDirective} from "ng2-sticky";
 
 console.log('Ng2StickyDirective', Ng2StickyDirective);
 
@@ -7,23 +7,40 @@ console.log('Ng2StickyDirective', Ng2StickyDirective);
   selector: 'my-app',
   directives: [Ng2StickyDirective],
   template: `
+    <div class="top-bar">
+      Some sticky after this. 
+    </div>
     <div class="container">
       <div class="float-right">
         <div ng2-sticky style="float: right"> float: right </div>
       </div>
       
       <div class="float-left">
-        <div ng2-sticky style="float: left"> float: left </div>
+        <div ng2-sticky sticky-after=".top-bar" 
+          style="float: left;margin-top: 0"> float: left </div>
       </div>
       
       <div class="div-middle">
         <div>One</div> <div>After</div> <div>Another</div>
         <div ng2-sticky> &lt;div> tag in the middle </div>
+        <br/><br/><br/>
         <div>One</div> <div>After</div> <div>Another</div>
       </div>
     </div>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
   `,
   styles: [`
+    .top-bar {
+      position:fixed;
+      background-color: #ccc;
+      border: 1px solid #333;
+      height: 100px;
+      z-index: 1;
+    }
+    .top-bar:active {
+      background-color: #fff
+    }
     .container {
       margin: 0 auto;
       padding: 10px;
@@ -36,9 +53,10 @@ console.log('Ng2StickyDirective', Ng2StickyDirective);
       border: 1px solid #333;
       background-image: linear-gradient(rgba(255, 255, 255, 1) 50%, transparent 50%, transparent);
       background-size: 50px 50px;
-      height: 1000px;
+      height: 500px;
     }
     .float-left {
+      margin-top: 0;
       background-color: rgba(255,0,0, .2);
     }
     .float-right {
@@ -47,7 +65,7 @@ console.log('Ng2StickyDirective', Ng2StickyDirective);
     .div-middle {
       background-color: rgba(0,0,255, .2);
     }
-    div[ng2-sticky] {
+    div[ng2-sticky/dist] {
       margin: 30px 10px 10px 10px;
       min-width: 400px;
       text-align: center;
