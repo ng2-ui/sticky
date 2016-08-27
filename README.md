@@ -9,31 +9,69 @@ https://github.com/1000ch/position-sticky
 
 ## Install
 
-1. install ???
+1. install ng2-sticky
 
-        $ npm install ???
+        $ npm install ng2-sticky --save
 
 2. add `map` and `packages` to your `systemjs.config.js`
 
-        map['???'] = 'node_modules/???';
-        packages['???'] = { main: 'dist/index.js', defaultExtension: 'js']
+        map['ng2-sticky'] = 'node_modules/ng2-sticky/dist';
+        packages['ng2-sticky'] = { main: 'index.js', defaultExtension: 'js' }
+
+3. import Ng2StickyModule to your AppModule
+
+        import { NgModule } from '@angular/core';
+        import { FormsModule } from "@angular/forms";
+        import { BrowserModule  } from '@angular/platform-browser';
+        import { AppComponent } from './app.component';
+        import { Ng2stickyModule } from 'ng2-sticky';
+        
+        @NgModule({
+          imports: [BrowserModule, FormsModule, Ng2StickyModule],
+          declarations: [AppComponent],
+          bootstrap: [ AppComponent ]
+        })
+        export class AppModule { }
+
+         
+For full example, please check out `test` directory to see the example of;
+
+  - `systemjs.config.js`
+  - `app.module.ts`
+  -  and `app.component.ts`.
+
 
 ## Usage it in your code
 
-1. import and add directive in your component
+      <div class="div-middle">
+        <div>One</div>
+        <div>After</div>
+        <div>Another</div>
+        
+        <div ng2-sticky>
+        
+        <br/><br/><br/>
+        <div>One</div>
+        <div>After</div>
+        <div>Another</div>
+      </div>
 
-        import { ??? } from '???';
+## **ng2-ui** welcomes new members and contributors
 
-        @Component({
-          selector: 'my-app',
-          templateUrl: './app/app.tpl.html',
-          directives: [ ??? ]
-        })
+This module is only improved and maintained by contributors like you.
 
+As a contributor, it's NOT required to be skilled in Javascript nor Angular2. 
+You are only to be open-minded and interested in helping others.
+As a contributor, you do following;
 
-2. You are ready. use it in your template
+  * Updating README.md
+  * Improving code comments
+  * Answering issues and building FAQ
+  * Documentation
+  * Translation
 
-        <div ???="???">
-          Loading...
-        </div>
+In result of your active contribution, you will be listed as a core contributor
+on https://ng2-ui.github.io, and a member of ng2-ui too.
 
+If you are interested in becoming a contributor and/or a member of ng-ui,
+please send me email to `allenhwkim AT gmail.com` with your github id. 

@@ -1,11 +1,7 @@
 import {Component} from '@angular/core'
-import {Ng2StickyDirective} from "ng2-sticky";
-
-console.log('Ng2StickyDirective', Ng2StickyDirective);
 
 @Component({
   selector: 'my-app',
-  directives: [Ng2StickyDirective],
   template: `
     <div class="top-bar">
       Some sticky after this. 
@@ -35,7 +31,6 @@ console.log('Ng2StickyDirective', Ng2StickyDirective);
       position:fixed;
       background-color: #ccc;
       border: 1px solid #333;
-      height: 100px;
       z-index: 1;
     }
     .top-bar:active {
@@ -65,7 +60,7 @@ console.log('Ng2StickyDirective', Ng2StickyDirective);
     .div-middle {
       background-color: rgba(0,0,255, .2);
     }
-    div[ng2-sticky/dist] {
+    div[ng2-sticky] {
       margin: 30px 10px 10px 10px;
       min-width: 400px;
       text-align: center;
