@@ -14,7 +14,7 @@ Plunker Example: https://plnkr.co/edit/ZKwAHN?p=preview
 2. add `map` and `packages` to your `systemjs.config.js`
 
         map['ng2-sticky'] = 'node_modules/ng2-sticky/dist';
-        packages['ng2-sticky'] = { main: 'index.js', defaultExtension: 'js' }
+        packages['ng2-sticky'] = { main: 'ng2-sticky.umd.js', defaultExtension: 'js' }
 
 3. import Ng2StickyModule to your AppModule
 

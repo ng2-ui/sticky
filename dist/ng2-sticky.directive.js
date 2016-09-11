@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var index_1 = require('ng2-utils/index');
+var ng2_utils_1 = require('ng2-utils');
 var Ng2StickyDirective = (function () {
     function Ng2StickyDirective(el) {
         var _this = this;
@@ -97,7 +97,7 @@ var Ng2StickyDirective = (function () {
         }
         // set the parent relatively positioned
         var allowedPositions = ['absolute', 'fixed', 'relative'];
-        var parentElPosition = index_1.computedStyle(this.parentEl, 'position');
+        var parentElPosition = ng2_utils_1.computedStyle(this.parentEl, 'position');
         if (allowedPositions.indexOf(parentElPosition) === -1) {
             this.parentEl.style.position = 'relative';
         }
@@ -108,18 +108,18 @@ var Ng2StickyDirective = (function () {
         var elRect = this.el.getBoundingClientRect();
         this.original = {
             boundingClientRect: elRect,
-            position: index_1.computedStyle(this.el, 'position'),
-            float: index_1.computedStyle(this.el, 'float'),
-            top: index_1.computedStyle(this.el, 'top'),
-            bottom: index_1.computedStyle(this.el, 'bottom'),
-            left: index_1.computedStyle(this.el, 'left'),
-            width: index_1.computedStyle(this.el, 'width'),
+            position: ng2_utils_1.computedStyle(this.el, 'position'),
+            float: ng2_utils_1.computedStyle(this.el, 'float'),
+            top: ng2_utils_1.computedStyle(this.el, 'top'),
+            bottom: ng2_utils_1.computedStyle(this.el, 'bottom'),
+            left: ng2_utils_1.computedStyle(this.el, 'left'),
+            width: ng2_utils_1.computedStyle(this.el, 'width'),
             offsetTop: this.el.offsetTop,
             offsetLeft: this.el.offsetLeft,
-            marginTop: parseInt(index_1.computedStyle(this.el, 'marginTop')),
-            marginBottom: parseInt(index_1.computedStyle(this.el, 'marginBottom')),
-            marginLeft: parseInt(index_1.computedStyle(this.el, 'marginLeft')),
-            marginRight: parseInt(index_1.computedStyle(this.el, 'marginLeft'))
+            marginTop: parseInt(ng2_utils_1.computedStyle(this.el, 'marginTop')),
+            marginBottom: parseInt(ng2_utils_1.computedStyle(this.el, 'marginBottom')),
+            marginLeft: parseInt(ng2_utils_1.computedStyle(this.el, 'marginLeft')),
+            marginRight: parseInt(ng2_utils_1.computedStyle(this.el, 'marginLeft'))
         };
         this.attach();
     };

@@ -19,9 +19,9 @@
   };
 
   map['ng2-sticky'] = '../dist';
-  packages['ng2-sticky'] = {main: 'index.js', defaultExtension: 'js'};
-  map['ng2-sticky'] = '../src';
-  packages['ng2-sticky'] = {main: 'index.ts', defaultExtension: 'ts'};
+  packages['ng2-sticky'] = {main: 'ng2-sticky.umd.js', defaultExtension: 'js'};
+  // map['ng2-sticky'] = '../src';
+  // packages['ng2-sticky'] = {main: 'index.ts', defaultExtension: 'ts'};
 
   System.config({
     transpiler: 'typescript', //use typescript for compilation
