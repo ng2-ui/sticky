@@ -1,9 +1,10 @@
 {
   "name": "ng2-sticky",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CSS position: sticky implementation in Angular2",
   "license": "MIT",
   "main": "dist/ng2-sticky.umd.js",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "start": "http-server -o",
