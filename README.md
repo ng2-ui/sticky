@@ -1,7 +1,7 @@
 # ng2-sticky
 position: sticky implementaion in Angular2
 
-[Demo](https://ng2-ui.github.io/#/sticky)
+[Demo](https://rawgit.com/ng2-ui/ng2-sticky/master/app/index.html)
 
 Plunker Example: https://plnkr.co/edit/ZKwAHN?p=preview
 

@@ -4,6 +4,7 @@
     "lib": ["es5", "es6", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
