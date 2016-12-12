@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var ng2_utils_1 = require('ng2-utils');
+var core_1 = require("@angular/core");
+var ng2_utils_1 = require("ng2-utils");
 var Ng2StickyDirective = (function () {
     function Ng2StickyDirective(el) {
         var _this = this;
@@ -131,17 +131,17 @@ var Ng2StickyDirective = (function () {
         window.removeEventListener('scroll', this.scrollHandler);
         window.removeEventListener('resize', this.scrollHandler);
     };
-    __decorate([
-        core_1.Input('sticky-after'), 
-        __metadata('design:type', String)
-    ], Ng2StickyDirective.prototype, "stickyAfter", void 0);
-    Ng2StickyDirective = __decorate([
-        core_1.Directive({
-            selector: '[ng2-sticky]'
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef])
-    ], Ng2StickyDirective);
     return Ng2StickyDirective;
 }());
+__decorate([
+    core_1.Input('sticky-after'),
+    __metadata("design:type", String)
+], Ng2StickyDirective.prototype, "stickyAfter", void 0);
+Ng2StickyDirective = __decorate([
+    core_1.Directive({
+        selector: '[ng2-sticky]'
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef])
+], Ng2StickyDirective);
 exports.Ng2StickyDirective = Ng2StickyDirective;
 //# sourceMappingURL=ng2-sticky.directive.js.map

@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/platform-browser"));
+		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/forms", "@angular/platform-browser"], factory);
+		define(["@angular/core", "@angular/forms", "@angular/common"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-sticky"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/platform-browser"));
+		exports["ng2-sticky"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"));
 	else
-		root["ng2-sticky"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/platform-browser"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
+		root["ng2-sticky"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -55,56 +55,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(2);
-	var platform_browser_1 = __webpack_require__(3);
-	var ng2_sticky_directive_1 = __webpack_require__(4);
+	var ng2_sticky_directive_1 = __webpack_require__(1);
 	exports.Ng2StickyDirective = ng2_sticky_directive_1.Ng2StickyDirective;
-	var Ng2StickyModule = (function () {
-	    function Ng2StickyModule() {
-	    }
-	    Ng2StickyModule = __decorate([
-	        core_1.NgModule({
-	            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
-	            declarations: [ng2_sticky_directive_1.Ng2StickyDirective],
-	            exports: [ng2_sticky_directive_1.Ng2StickyDirective]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Ng2StickyModule);
-	    return Ng2StickyModule;
-	}());
-	exports.Ng2StickyModule = Ng2StickyModule;
+	var ng2_sticky_module_1 = __webpack_require__(4);
+	exports.Ng2StickyModule = ng2_sticky_module_1.Ng2StickyModule;
 
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117,8 +75,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(1);
-	var ng2_utils_1 = __webpack_require__(5);
+	var core_1 = __webpack_require__(2);
+	var ng2_utils_1 = __webpack_require__(3);
 	var Ng2StickyDirective = (function () {
 	    function Ng2StickyDirective(el) {
 	        var _this = this;
@@ -240,28 +198,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        window.removeEventListener('scroll', this.scrollHandler);
 	        window.removeEventListener('resize', this.scrollHandler);
 	    };
-	    __decorate([
-	        core_1.Input('sticky-after'), 
-	        __metadata('design:type', String)
-	    ], Ng2StickyDirective.prototype, "stickyAfter", void 0);
-	    Ng2StickyDirective = __decorate([
-	        core_1.Directive({
-	            selector: '[ng2-sticky]'
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], Ng2StickyDirective);
 	    return Ng2StickyDirective;
 	}());
+	__decorate([
+	    core_1.Input('sticky-after'),
+	    __metadata("design:type", String)
+	], Ng2StickyDirective.prototype, "stickyAfter", void 0);
+	Ng2StickyDirective = __decorate([
+	    core_1.Directive({
+	        selector: '[ng2-sticky]'
+	    }),
+	    __metadata("design:paramtypes", [core_1.ElementRef])
+	], Ng2StickyDirective);
 	exports.Ng2StickyDirective = Ng2StickyDirective;
 
 
 /***/ },
-/* 5 */
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
 		if(true)
-			module.exports = factory(__webpack_require__(1));
+			module.exports = factory(__webpack_require__(2));
 		else if(typeof define === 'function' && define.amd)
 			define(["@angular/core"], factory);
 		else if(typeof exports === 'object')
@@ -540,6 +504,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	;
 	//# sourceMappingURL=ng2-utils.umd.js.map
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(2);
+	var forms_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(6);
+	var ng2_sticky_directive_1 = __webpack_require__(1);
+	exports.Ng2StickyDirective = ng2_sticky_directive_1.Ng2StickyDirective;
+	var Ng2StickyModule = (function () {
+	    function Ng2StickyModule() {
+	    }
+	    return Ng2StickyModule;
+	}());
+	Ng2StickyModule = __decorate([
+	    core_1.NgModule({
+	        imports: [common_1.CommonModule, forms_1.FormsModule],
+	        declarations: [ng2_sticky_directive_1.Ng2StickyDirective],
+	        exports: [ng2_sticky_directive_1.Ng2StickyDirective]
+	    }),
+	    __metadata("design:paramtypes", [])
+	], Ng2StickyModule);
+	exports.Ng2StickyModule = Ng2StickyModule;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 
 /***/ }
 /******/ ])

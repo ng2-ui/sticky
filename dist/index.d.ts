@@ -1,4 +1,3 @@
 import { Ng2StickyDirective } from "./ng2-sticky.directive";
-export { Ng2StickyDirective };
-export declare class Ng2StickyModule {
-}
+import { Ng2StickyModule } from "./ng2-sticky.module";
+export { Ng2StickyDirective, Ng2StickyModule };
