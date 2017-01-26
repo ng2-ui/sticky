@@ -25,7 +25,9 @@
     "url": "https://github.com/jsvalley/ng2-sticky/issues"
   },
   "homepage": "https://github.com/jsvalley/ng2-sticky#readme",
-  "dependencies": {},
+  "dependencies": {
+    "ng2-utils": "^0.6.1"
+  },
   "devDependencies": {
     "@angular/common": "^2.3.0",
     "@angular/compiler": "^2.3.0",
@@ -40,7 +42,6 @@
     "angular2-template-loader": "^0.6.0",
     "codelyzer": "^2.0.0-beta.3",
     "core-js": "^2.4.1",
-    "ng2-utils": "^0.4.1",
     "npm-check-updates": "^2.8.8",
     "npm-run-all": "^3.1.2",
     "raw-loader": "^0.5.1",
