@@ -123,6 +123,9 @@ var Ng2StickyDirective = (function () {
         };
         this.attach();
     };
+    Ng2StickyDirective.prototype.ngOnDestroy = function () {
+        this.detach();
+    };
     Ng2StickyDirective.prototype.attach = function () {
         window.addEventListener('scroll', this.scrollHandler);
         window.addEventListener('resize', this.scrollHandler);

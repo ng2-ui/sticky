@@ -9,6 +9,7 @@ export declare class Ng2StickyDirective {
     original: any;
     constructor(el: ElementRef);
     ngAfterViewInit(): void;
+    ngOnDestroy(): void;
     attach(): void;
     detach(): void;
     scrollHandler: () => void;
