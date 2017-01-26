@@ -65,6 +65,10 @@ export class Ng2StickyDirective {
     this.attach();
   }
 
+  ngOnDestroy(): void {
+    this.detach();
+  }
+
   attach(): void {
     window.addEventListener('scroll', this.scrollHandler);
     window.addEventListener('resize', this.scrollHandler);
