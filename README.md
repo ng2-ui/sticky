@@ -22,7 +22,7 @@ Plunker Example: https://plnkr.co/edit/ZKwAHN?p=preview
         import { FormsModule } from "@angular/forms";
         import { BrowserModule  } from '@angular/platform-browser';
         import { AppComponent } from './app.component';
-        import { Ng2stickyModule } from 'ng2-sticky';
+        import { Ng2StickyModule } from 'ng2-sticky';
         
         @NgModule({
           imports: [BrowserModule, FormsModule, Ng2StickyModule],
