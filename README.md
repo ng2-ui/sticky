@@ -11,7 +11,7 @@ Plunker Example: https://plnkr.co/edit/ZKwAHN?p=preview
 
         $ npm install ng2-sticky --save
 
-2. add `map` and `packages` to your `systemjs.config.js`
+2. If you are not using webpack, add `map` and `packages` to your `systemjs.config.js`
 
         map['ng2-sticky'] = 'node_modules/ng2-sticky/dist';
         packages['ng2-sticky'] = { main: 'ng2-sticky.umd.js', defaultExtension: 'js' }
