@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var ng2_sticky_directive_1 = require("./ng2-sticky.directive");
 exports.Ng2StickyDirective = ng2_sticky_directive_1.Ng2StickyDirective;
 var ng2_sticky_module_1 = require("./ng2-sticky.module");

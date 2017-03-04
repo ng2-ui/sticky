@@ -1,6 +1,6 @@
 {
   "name": "ng2-sticky",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "CSS position: sticky implementation in Angular2",
   "license": "MIT",
   "main": "dist/ng2-sticky.umd.js",
@@ -42,17 +42,18 @@
     "angular2-template-loader": "^0.6.0",
     "codelyzer": "^2.0.0-beta.3",
     "core-js": "^2.4.1",
+    "loader-utils": "^1.0.2",
     "npm-check-updates": "^2.8.8",
     "npm-run-all": "^3.1.2",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.4",
     "rxjs": "^5.0.0-rc.5",
     "strip-loader": "^0.1.2",
-    "ts-loader": "^1.3.2",
+    "ts-loader": "^2.0.1",
     "tslint": "^4.0.2",
     "typescript": "^2.1.4",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
     "zone.js": "^0.7.2"
   }
 }
