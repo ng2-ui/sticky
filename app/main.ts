@@ -14,10 +14,10 @@ import { FormsModule }    from "@angular/forms";
 import { AppComponent }   from './app.component';
 
 //noinspection TypeScriptCheckImport
-import {Ng2StickyModule} from "ng2-sticky";
+import {NguiStickyModule} from "@ngui/sticky";
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, Ng2StickyModule],
+  imports: [BrowserModule, FormsModule, NguiStickyModule],
   declarations: [AppComponent],
   bootstrap: [ AppComponent ]
 })
@@ -25,3 +25,4 @@ export class AppModule { }
 
 // Compile and launch the module
 platformBrowserDynamic().bootstrapModule(AppModule);
+

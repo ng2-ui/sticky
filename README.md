@@ -1,31 +1,37 @@
-# ng2-sticky
+# @ngui/sticky
 position: sticky implementaion in Angular2
 
-[Demo](https://rawgit.com/ng2-ui/ng2-sticky/master/app/index.html)
+## IMPORTANT NOTICE
+After 0.7.0 or higher, ng2-sticky has been changed to @ngui/stikcy. Here are the changes;
+
+ * Module ng2-sticky has been changed to @ngui/stikcy.
+ * Direvtive ng2-sticky is moved to ngui-stikcy.
+ * Class name Ng2StickyModule is moved to NguiStickyModule.
+
+[Demo](https://rawgit.com/ng2-ui/sticky/master/app/index.html)
 
 Plunker Example: https://plnkr.co/edit/ZKwAHN?p=preview
 
 ## Install
 
-1. install ng2-sticky
+1. install @ngui/sticky
 
-        $ npm install ng2-sticky --save
+        $ npm install @ngui/sticky --save
 
 2. If you are not using webpack, add `map` and `packages` to your `systemjs.config.js`
 
-        map['ng2-sticky'] = 'node_modules/ng2-sticky/dist';
-        packages['ng2-sticky'] = { main: 'ng2-sticky.umd.js', defaultExtension: 'js' }
+        map['@ngui/sticky'] = 'node_modules/@ngui/sticky/dist/sticky.umd.js';
 
-3. import Ng2StickyModule to your AppModule
+3. import NguiStickyModule to your AppModule
 
         import { NgModule } from '@angular/core';
         import { FormsModule } from "@angular/forms";
         import { BrowserModule  } from '@angular/platform-browser';
         import { AppComponent } from './app.component';
-        import { Ng2StickyModule } from 'ng2-sticky';
+        import { NguiStickyModule } from '@ngui/sticky';
         
         @NgModule({
-          imports: [BrowserModule, FormsModule, Ng2StickyModule],
+          imports: [BrowserModule, FormsModule, NguiStickyModule],
           declarations: [AppComponent],
           bootstrap: [ AppComponent ]
         })
@@ -45,7 +51,7 @@ For full example, please check out `test` directory to see the example of;
         <div>After</div>
         <div>Another</div>
         
-        <div ng2-sticky>
+        <div ngui-sticky>
         
         <br/><br/><br/>
         <div>One</div>

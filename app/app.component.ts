@@ -8,17 +8,17 @@ import {Component} from '@angular/core'
     </div>
     <div class="container">
       <div class="float-right">
-        <div ng2-sticky style="float: right"> float: right </div>
+        <div ngui-sticky style="float: right"> float: right </div>
       </div>
       
       <div class="float-left">
-        <div ng2-sticky sticky-after=".top-bar" 
+        <div ngui-sticky sticky-after=".top-bar" 
           style="float: left;margin-top: 0"> float: left </div>
       </div>
       
       <div class="div-middle">
         <div>One</div> <div>After</div> <div>Another</div>
-        <div ng2-sticky> &lt;div> tag in the middle </div>
+        <div ngui-sticky> &lt;div> tag in the middle </div>
         <br/><br/><br/>
         <div>One</div> <div>After</div> <div>Another</div>
       </div>
@@ -60,7 +60,7 @@ import {Component} from '@angular/core'
     .div-middle {
       background-color: rgba(0,0,255, .2);
     }
-    div[ng2-sticky] {
+    div[ngui-sticky] {
       margin: 30px 10px 10px 10px;
       min-width: 400px;
       text-align: center;
@@ -69,7 +69,7 @@ import {Component} from '@angular/core'
       border: 1px solid #333;
       padding: 10px;
     }
-    .div-middle div[ng2-sticky] {
+    .div-middle div[ngui-sticky] {
       margin: 0;
     }
  `]

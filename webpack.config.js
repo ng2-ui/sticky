@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    'ng2-sticky': path.join(__dirname, 'src', 'index.ts')
+    '@ngui/sticky': path.join(__dirname, 'src', 'index.ts')
   },
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css', '.html']

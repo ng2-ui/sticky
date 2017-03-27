@@ -1,9 +1,9 @@
 {
-  "name": "ng2-sticky",
-  "version": "0.5.0",
+  "name": "@ngui/sticky",
+  "version": "0.6.0",
   "description": "CSS position: sticky implementation in Angular2",
   "license": "MIT",
-  "main": "dist/ng2-sticky.umd.js",
+  "main": "dist/sticky.umd.js",
   "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
@@ -18,15 +18,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsvalley/ng2-sticky.git"
+    "url": "git+https://github.com/jsvalley/sticky.git"
   },
   "author": "Allen Kim <allenhwkim@gmail.com>",
   "bugs": {
-    "url": "https://github.com/jsvalley/ng2-sticky/issues"
+    "url": "https://github.com/jsvalley/sticky/issues"
   },
-  "homepage": "https://github.com/jsvalley/ng2-sticky#readme",
+  "homepage": "https://github.com/jsvalley/sticky#readme",
   "dependencies": {
-    "ng2-utils": "^0.6.1"
+    "@ngui/utils": "^0.7.0"
   },
   "devDependencies": {
     "@angular/common": "^2.3.0",

@@ -1,5 +1,5 @@
-import {Ng2StickyDirective} from "./ng2-sticky.directive";
-import {Ng2StickyModule} from "./ng2-sticky.module";
+import {NguiStickyDirective} from "./sticky.directive";
+import {NguiStickyModule} from "./sticky.module";
 
-export { Ng2StickyDirective, Ng2StickyModule };
+export { NguiStickyDirective, NguiStickyModule };
 

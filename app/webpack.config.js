@@ -5,7 +5,7 @@ const config = {
   resolve: {
     extensions: ['.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng2-sticky': path.join(__dirname, '..', 'src', 'index')
+      '@ngui/sticky': path.join(__dirname, '..', 'src', 'index')
     }
   },
   devtool: 'source-map',
