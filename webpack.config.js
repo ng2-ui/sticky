@@ -13,8 +13,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].umd.js",
-    library: ["[name]"],
+    filename: "sticky.umd.js",
+    library: ["stikcy"],
     libraryTarget: "umd"
   },
   externals: [
