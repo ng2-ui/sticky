@@ -7,7 +7,7 @@
 		exports["stikcy"] = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"));
 	else
 		root["stikcy"] = factory(root["@angular/core"], root["@angular/common"], root["@angular/forms"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_19__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_20__, __WEBPACK_EXTERNAL_MODULE_21__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,6 +84,45 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var core_1 = __webpack_require__(0);
+var MemoryStorage = (function () {
+    function MemoryStorage() {
+        this.data = {};
+    }
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () { return Object.keys(this.data).length; },
+        enumerable: true,
+        configurable: true
+    });
+    MemoryStorage.prototype.getItem = function (key) { return this.data[key]; };
+    MemoryStorage.prototype.setItem = function (key, value) { this.data[key] = value; };
+    MemoryStorage.prototype.removeItem = function (key) { delete this.data[key]; };
+    MemoryStorage.prototype.clear = function () { this.data = {}; };
+    MemoryStorage.prototype.key = function (num) { return Object.keys(this.data)[num]; };
+    return MemoryStorage;
+}());
+MemoryStorage = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], MemoryStorage);
+exports.MemoryStorage = MemoryStorage;
+//# sourceMappingURL=memory-storage.js.map
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:true, eqeqeq:true, laxbreak:true, noempty:false */
@@ -129,6 +168,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
     The options are (default in brackets):
         indent_size (4)                         — indentation size,
         indent_char (space)                     — character to indent with,
+        preserve_newlines (default false)       - whether existing line breaks should be preserved,
         selector_separator_newline (true)       - separate selectors with newline or
                                                   not (e.g. "a,\nbr" or "a, br")
         end_with_newline (false)                - end with a newline
@@ -184,8 +224,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
 
         source_text = source_text || '';
 
+        var newlinesFromLastWSEat = 0;
         var indentSize = options.indent_size ? parseInt(options.indent_size, 10) : 4;
         var indentCharacter = options.indent_char || ' ';
+        var preserve_newlines = (options.preserve_newlines === undefined) ? false : options.preserve_newlines;
         var selectorSeparatorNewline = (options.selector_separator_newline === undefined) ? true : options.selector_separator_newline;
         var end_with_newline = (options.end_with_newline === undefined) ? false : options.end_with_newline;
         var newline_between_rules = (options.newline_between_rules === undefined) ? true : options.newline_between_rules;
@@ -256,12 +298,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
             return str;
         }
 
-        function eatWhitespace() {
-            var result = '';
+        function eatWhitespace(preserve_newlines_local) {
+            var result = 0;
             while (whiteRe.test(peek())) {
                 next();
-                result += ch;
+                if (ch === '\n' && preserve_newlines_local && preserve_newlines) {
+                    print.newLine(true);
+                    result++;
+                }
             }
+            newlinesFromLastWSEat = result;
             return result;
         }
 
@@ -342,12 +388,18 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
         print["{"] = function(ch) {
             print.singleSpace();
             output.push(ch);
-            print.newLine();
+            if (!eatWhitespace(true)) {
+                print.newLine();
+            }
         };
-        print["}"] = function(ch) {
-            print.newLine();
-            output.push(ch);
-            print.newLine();
+        print["}"] = function(newline) {
+            if (newline) {
+                print.newLine();
+            }
+            output.push('}');
+            if (!eatWhitespace(true)) {
+                print.newLine();
+            }
         };
 
         print._lastCharWhitespace = function() {
@@ -358,8 +410,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
             if (output.length) {
                 if (!keepWhitespace && output[output.length - 1] !== '\n') {
                     print.trim();
+                } else if (output[output.length - 1] === basebaseIndentString) {
+                    output.pop();
                 }
-
                 output.push('\n');
 
                 if (basebaseIndentString) {
@@ -461,9 +514,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                     eatWhitespace();
                     next();
                     print.singleSpace();
-                    output.push("{}");
-                    print.newLine();
-                    if (newline_between_rules && indentLevel === 0) {
+                    output.push("{");
+                    print['}'](false);
+                    if (newlinesFromLastWSEat < 2 && newline_between_rules && indentLevel === 0) {
                         print.newLine(true);
                     }
                 } else {
@@ -480,13 +533,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                 }
             } else if (ch === '}') {
                 outdent();
-                print["}"](ch);
+                print["}"](true);
                 insideRule = false;
                 insidePropertyValue = false;
                 if (nestedLevel) {
                     nestedLevel--;
                 }
-                if (newline_between_rules && indentLevel === 0) {
+                if (newlinesFromLastWSEat < 2 && newline_between_rules && indentLevel === 0) {
                     print.newLine(true);
                 }
             } else if (ch === ":") {
@@ -524,7 +577,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
             } else if (ch === ';') {
                 insidePropertyValue = false;
                 output.push(ch);
-                print.newLine();
+                if (!eatWhitespace(true)) {
+                    print.newLine();
+                }
             } else if (ch === '(') { // may be a url
                 if (lookBack("url")) {
                     output.push(ch);
@@ -547,8 +602,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                 parenLevel--;
             } else if (ch === ',') {
                 output.push(ch);
-                eatWhitespace();
-                if (selectorSeparatorNewline && !insidePropertyValue && parenLevel < 1) {
+                if (!eatWhitespace(true) && selectorSeparatorNewline && !insidePropertyValue && parenLevel < 1) {
                     print.newLine();
                 } else {
                     print.singleSpace();
@@ -575,8 +629,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                 output.push(ch);
             } else if (ch === '=') { // no whitespace before or after
                 eatWhitespace();
-                ch = '=';
-                output.push(ch);
+                output.push('=');
+                if (whiteRe.test(ch)) {
+                    ch = '';
+                }
             } else {
                 print.preserveSingleSpace();
                 output.push(ch);
@@ -643,7 +699,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
 }());
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:true, eqeqeq:true, laxbreak:true, noempty:false */
@@ -3130,7 +3186,7 @@ if (!Object.values) {
 }());
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3144,8 +3200,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var utils_1 = __webpack_require__(13);
+var utils_1 = __webpack_require__(15);
 var NguiStickyDirective = (function () {
     function NguiStickyDirective(el) {
         var _this = this;
@@ -3286,7 +3343,7 @@ exports.NguiStickyDirective = NguiStickyDirective;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3344,7 +3401,7 @@ exports.HtmlCodePipe = HtmlCodePipe;
 //# sourceMappingURL=html-code.pipe.js.map
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3359,7 +3416,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var js_beautify = __webpack_require__(15);
+var js_beautify = __webpack_require__(17);
 var JavascriptCodePipe = (function () {
     function JavascriptCodePipe() {
     }
@@ -3378,7 +3435,7 @@ exports.JavascriptCodePipe = JavascriptCodePipe;
 //# sourceMappingURL=javascript-code.pipe.js.map
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3393,9 +3450,77 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var forms_1 = __webpack_require__(19);
-var common_1 = __webpack_require__(18);
-var sticky_directive_1 = __webpack_require__(3);
+var memory_storage_1 = __webpack_require__(1);
+var Storage = (function () {
+    function Storage() {
+        // preference && (this.preference = preference);   //'localStorage' or 'sessionStorage'
+        this.preference = 'sessionStorage';
+        if (this.preference == 'localStorage' && this.hasStorage('localStorage')) {
+            this.storage = window.localStorage;
+        }
+        else if (this.preference == 'sessionStorage' && this.hasStorage('sessionStorage')) {
+            this.storage = window.sessionStorage;
+        }
+        else {
+            this.storage = new memory_storage_1.MemoryStorage();
+        }
+    }
+    Object.defineProperty(Storage.prototype, "length", {
+        get: function () { return this.storage.length; },
+        enumerable: true,
+        configurable: true
+    });
+    Storage.prototype.getItem = function (key) {
+        var strValue = this.storage.getItem(key);
+        try {
+            return JSON.parse(strValue);
+        }
+        catch (e) {
+            return strValue;
+        }
+    };
+    Storage.prototype.setItem = function (key, value) {
+        var strValue = typeof value === 'object' ? JSON.stringify(value) : value.toString();
+        this.storage.setItem(key, strValue);
+    };
+    Storage.prototype.removeItem = function (key) { this.storage.removeItem(key); };
+    Storage.prototype.clear = function () { this.storage.clear(); };
+    Storage.prototype.hasStorage = function (name) {
+        try {
+            window[name].setItem('test', '1');
+            window[name].removeItem('test');
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    return Storage;
+}());
+Storage = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], Storage);
+exports.Storage = Storage;
+//# sourceMappingURL=storage.js.map
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var forms_1 = __webpack_require__(21);
+var common_1 = __webpack_require__(20);
+var sticky_directive_1 = __webpack_require__(4);
 exports.NguiStickyDirective = sticky_directive_1.NguiStickyDirective;
 var NguiStickyModule = (function () {
     function NguiStickyModule() {
@@ -3407,14 +3532,13 @@ NguiStickyModule = __decorate([
         imports: [common_1.CommonModule, forms_1.FormsModule],
         declarations: [sticky_directive_1.NguiStickyDirective],
         exports: [sticky_directive_1.NguiStickyDirective]
-    }),
-    __metadata("design:paramtypes", [])
+    })
 ], NguiStickyModule);
 exports.NguiStickyModule = NguiStickyModule;
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3447,7 +3571,7 @@ exports.NguiUtilsDirective = NguiUtilsDirective;
 //# sourceMappingURL=utils.directive.js.map
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3494,7 +3618,7 @@ exports.computedStyle = computedStyle;
 //# sourceMappingURL=computed-style.js.map
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3554,7 +3678,7 @@ exports.elementVisible = elementVisible;
 //# sourceMappingURL=element-visible.js.map
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3571,7 +3695,7 @@ exports.outerHeight = outerHeight;
 //# sourceMappingURL=outer-height.js.map
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3588,7 +3712,7 @@ exports.outerWidth = outerWidth;
 //# sourceMappingURL=outer-width.js.map
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3648,31 +3772,40 @@ exports.scrollTo = scrollTo;
 //# sourceMappingURL=scroll-to.js.map
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var scroll_to_1 = __webpack_require__(12);
+/* dom functions */
+var scroll_to_1 = __webpack_require__(14);
 exports.scrollTo = scroll_to_1.scrollTo;
-var element_visible_1 = __webpack_require__(9);
+var element_visible_1 = __webpack_require__(11);
 exports.elementVisible = element_visible_1.elementVisible;
-var computed_style_1 = __webpack_require__(8);
+var computed_style_1 = __webpack_require__(10);
 exports.computedStyle = computed_style_1.computedStyle;
-var outer_width_1 = __webpack_require__(11);
+var outer_width_1 = __webpack_require__(13);
 exports.outerWidth = outer_width_1.outerWidth;
-var outer_height_1 = __webpack_require__(10);
+var outer_height_1 = __webpack_require__(12);
 exports.outerHeight = outer_height_1.outerHeight;
-var html_code_pipe_1 = __webpack_require__(4);
+/*  pipes */
+var html_code_pipe_1 = __webpack_require__(5);
 exports.HtmlCodePipe = html_code_pipe_1.HtmlCodePipe;
-var javascript_code_pipe_1 = __webpack_require__(5);
+var javascript_code_pipe_1 = __webpack_require__(6);
 exports.JavascriptCodePipe = javascript_code_pipe_1.JavascriptCodePipe;
-var utils_module_1 = __webpack_require__(14);
+/* services */
+var memory_storage_1 = __webpack_require__(1);
+exports.MemoryStorage = memory_storage_1.MemoryStorage;
+var storage_1 = __webpack_require__(7);
+exports.Storage = storage_1.Storage;
+/* module */
+var utils_module_1 = __webpack_require__(16);
 exports.NguiUtilsModule = utils_module_1.NguiUtilsModule;
 //# sourceMappingURL=index.js.map
 
+
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3687,9 +3820,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var html_code_pipe_1 = __webpack_require__(4);
-var javascript_code_pipe_1 = __webpack_require__(5);
-var utils_directive_1 = __webpack_require__(7);
+var html_code_pipe_1 = __webpack_require__(5);
+var javascript_code_pipe_1 = __webpack_require__(6);
+var utils_directive_1 = __webpack_require__(9);
+/* services */
+var memory_storage_1 = __webpack_require__(1);
+var storage_1 = __webpack_require__(7);
 var NguiUtilsModule = (function () {
     function NguiUtilsModule() {
     }
@@ -3697,6 +3833,10 @@ var NguiUtilsModule = (function () {
 }());
 NguiUtilsModule = __decorate([
     core_1.NgModule({
+        providers: [
+            memory_storage_1.MemoryStorage,
+            storage_1.Storage
+        ],
         declarations: [
             html_code_pipe_1.HtmlCodePipe,
             javascript_code_pipe_1.JavascriptCodePipe,
@@ -3714,7 +3854,7 @@ exports.NguiUtilsModule = NguiUtilsModule;
 //# sourceMappingURL=utils.module.js.map
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -3782,9 +3922,9 @@ function get_beautify(js_beautify, css_beautify, html_beautify) {
 if (true) {
     // Add support for AMD ( https://github.com/amdjs/amdjs-api/wiki/AMD#defineamd-property- )
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(3),
         __webpack_require__(2),
-        __webpack_require__(1),
-        __webpack_require__(16)
+        __webpack_require__(18)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function(js_beautify, css_beautify, html_beautify) {
         return get_beautify(js_beautify, css_beautify, html_beautify);
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
@@ -3801,7 +3941,7 @@ if (true) {
 }
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:true, eqeqeq:true, laxbreak:true, noempty:false */
@@ -4107,7 +4247,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                         return content.length ? content.join('') : ['', 'TK_EOF'];
                     }
 
-                    if (this.traverse_whitespace()) {
+                    if (handlebarsStarted < 2 && this.traverse_whitespace()) {
                         this.space_or_wrap(content);
                         continue;
                     }
@@ -4296,7 +4436,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                             }
 
                             for (var count = 0; count < alignment_size; count++) {
-                                content.push(indent_character);
+                                // only ever further indent with spaces since we're trying to align characters
+                                content.push(' ');
                             }
                         }
                         if (first_attr) {
@@ -4363,10 +4504,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
                 var tag_index;
                 var tag_offset;
 
-                if (tag_complete.indexOf('\n') !== -1) { //if there's a line break, thats where the tag name ends
-                    tag_index = tag_complete.indexOf('\n');
-                } else if (tag_complete.indexOf(' ') !== -1) { //if there's whitespace, thats where the tag name ends
+                // must check for space first otherwise the tag could have the first attribute included, and
+                // then not un-indent correctly
+                if (tag_complete.indexOf(' ') !== -1) { //if there's whitespace, thats where the tag name ends
                     tag_index = tag_complete.indexOf(' ');
+                } else if (tag_complete.indexOf('\n') !== -1) { //if there's a line break, thats where the tag name ends
+                    tag_index = tag_complete.indexOf('\n');
                 } else if (tag_complete.charAt(0) === '{') {
                     tag_index = tag_complete.indexOf('}');
                 } else { //otherwise go with the tag ending
@@ -4897,9 +5040,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
 
     if (true) {
         // Add support for AMD ( https://github.com/amdjs/amdjs-api/wiki/AMD#defineamd-property- )
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, __webpack_require__(2), __webpack_require__(1)], __WEBPACK_AMD_DEFINE_RESULT__ = function(requireamd) {
-            var js_beautify = __webpack_require__(2);
-            var css_beautify = __webpack_require__(1);
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, __webpack_require__(3), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function(requireamd) {
+            var js_beautify = __webpack_require__(3);
+            var css_beautify = __webpack_require__(2);
 
             return {
                 html_beautify: function(html_source, options) {
@@ -4932,28 +5075,29 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
 }());
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var sticky_directive_1 = __webpack_require__(3);
+Object.defineProperty(exports, "__esModule", { value: true });
+var sticky_directive_1 = __webpack_require__(4);
 exports.NguiStickyDirective = sticky_directive_1.NguiStickyDirective;
-var sticky_module_1 = __webpack_require__(6);
+var sticky_module_1 = __webpack_require__(8);
 exports.NguiStickyModule = sticky_module_1.NguiStickyModule;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_18__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_20__;
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_19__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_21__;
 
 /***/ })
 /******/ ]);
