@@ -100,7 +100,7 @@ export class NguiStickyDirective {
     if (this.original.marginTop + this.original.marginBottom +
       this.original.boundingClientRect.height + this.stickyOffsetTop >= parentRect.bottom) {
       /**
-       * stikcy element reached to the bottom of the container
+       * sticky element reached to the bottom of the container
        */
       // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
       let floatAdjustment =
@@ -114,7 +114,7 @@ export class NguiStickyDirective {
       }, dynProps, floatAdjustment);
     } else if (parentRect.top * -1 + this.original.marginTop + this.stickyOffsetTop > this.original.offsetTop) {
       /**
-       * stikcy element is in the middle of container
+       * sticky element is in the middle of container
        */
       //console.log('case 2 (fixed)', parentRect.top * -1, this.original.marginTop, this.original.offsetTop);
 
@@ -133,7 +133,7 @@ export class NguiStickyDirective {
       }, dynProps);
     } else {
       /**
-       * stikcy element is in the original position
+       * sticky element is in the original position
        */
       // console.log('case 3 (original)');
       if (this.fillerEl) {

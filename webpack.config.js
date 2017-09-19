@@ -14,7 +14,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "sticky.umd.js",
-    library: ["stikcy"],
+    library: ["sticky"],
     libraryTarget: "umd"
   },
   externals: [
