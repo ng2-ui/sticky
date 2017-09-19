@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["@angular/core", "@angular/common", "@angular/forms"], factory);
 	else if(typeof exports === 'object')
-		exports["stikcy"] = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"));
+		exports["sticky"] = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"));
 	else
-		root["stikcy"] = factory(root["@angular/core"], root["@angular/common"], root["@angular/forms"]);
+		root["sticky"] = factory(root["@angular/core"], root["@angular/common"], root["@angular/forms"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_20__, __WEBPACK_EXTERNAL_MODULE_21__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -3228,7 +3228,7 @@ var NguiStickyDirective = (function () {
             if (_this.original.marginTop + _this.original.marginBottom +
                 _this.original.boundingClientRect.height + _this.stickyOffsetTop >= parentRect.bottom) {
                 /**
-                 * stikcy element reached to the bottom of the container
+                 * sticky element reached to the bottom of the container
                  */
                 // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
                 var floatAdjustment = _this.original.float === 'right' ? { right: 0 } :
@@ -3242,7 +3242,7 @@ var NguiStickyDirective = (function () {
             }
             else if (parentRect.top * -1 + _this.original.marginTop + _this.stickyOffsetTop > _this.original.offsetTop) {
                 /**
-                 * stikcy element is in the middle of container
+                 * sticky element is in the middle of container
                  */
                 //console.log('case 2 (fixed)', parentRect.top * -1, this.original.marginTop, this.original.offsetTop);
                 // if not floating, add an empty filler element, since the original elements becames 'fixed'
@@ -3260,7 +3260,7 @@ var NguiStickyDirective = (function () {
             }
             else {
                 /**
-                 * stikcy element is in the original position
+                 * sticky element is in the original position
                  */
                 // console.log('case 3 (original)');
                 if (_this.fillerEl) {
