@@ -1,29 +1,28 @@
 'use strict';
 
-import { Directive, ElementRef, Input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
 import { computedStyle } from '@ngui/utils';
 
 @Directive({
   selector: '[ngui-sticky]'
 })
-export class NguiStickyDirective {
-  @Input('sticky-after') stickyAfter: string;  // css selector to be sticky after
+export class NguiStickyDirective implements AfterViewInit, OnDestroy {
+  @Input('sticky-after') public stickyAfter: string;  // css selector to be sticky after
 
-  el: HTMLElement;
-  parentEl: HTMLElement;
-  fillerEl: HTMLElement;
-  stickyOffsetTop: number = 0;
+  protected el: HTMLElement;
+  protected parentEl: HTMLElement;
+  protected fillerEl: HTMLElement;
+  protected stickyOffsetTop: number = 0;
 
-
-  diff: any;
-  original: any;
+  protected diff: any;
+  protected original: any;
 
   constructor(el: ElementRef) {
     this.el = this.el = el.nativeElement;
     this.parentEl = this.el.parentElement;
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.el.style.boxSizing = 'border-box';
     
     if (this.stickyAfter) {
@@ -65,22 +64,21 @@ export class NguiStickyDirective {
     this.attach();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.detach();
   }
 
-  attach(): void {
+  protected attach(): void {
     window.addEventListener('scroll', this.scrollHandler);
     window.addEventListener('resize', this.scrollHandler);
   }
 
-  detach(): void {
+  protected detach(): void {
     window.removeEventListener('scroll', this.scrollHandler);
     window.removeEventListener('resize', this.scrollHandler);
   }
 
-  scrollHandler = () => {
-    // let elRect: ClientRect = this.el.getBoundingClientRect();
+  protected scrollHandler = () => {
     let parentRect: ClientRect = this.el.parentElement.getBoundingClientRect();
     let bodyRect: ClientRect = document.body.getBoundingClientRect();
     let dynProps;
@@ -92,17 +90,14 @@ export class NguiStickyDirective {
       let left = parentRect.left - bodyRect.left + this.original.marginLeft;
       dynProps = { left: left + 'px'};
     } else {
-      //console.log('parentRect..............', parentRect.width);
       dynProps = {width: parentRect.width + 'px'};
     }
-    //console.log('dynProps', dynProps);
 
     if (this.original.marginTop + this.original.marginBottom +
       this.original.boundingClientRect.height + this.stickyOffsetTop >= parentRect.bottom) {
       /**
        * sticky element reached to the bottom of the container
        */
-      // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
       let floatAdjustment =
         this.original.float === 'right' ? {right: 0} :
         this.original.float === 'left' ? {left: 0} : {};
@@ -116,7 +111,6 @@ export class NguiStickyDirective {
       /**
        * sticky element is in the middle of container
        */
-      //console.log('case 2 (fixed)', parentRect.top * -1, this.original.marginTop, this.original.offsetTop);
 
       // if not floating, add an empty filler element, since the original elements becames 'fixed'
       if (this.original.float !== 'left' && this.original.float !== 'right' && !this.fillerEl) {
@@ -135,7 +129,6 @@ export class NguiStickyDirective {
       /**
        * sticky element is in the original position
        */
-      // console.log('case 3 (original)');
       if (this.fillerEl) {
         this.parentEl.removeChild(this.fillerEl); //IE11 does not work with el.remove()
         this.fillerEl = undefined;
