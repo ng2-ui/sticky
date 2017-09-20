@@ -18,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsvalley/sticky.git"
+    "url": "git+https://github.com/ng2-ui/sticky.git"
   },
   "author": "Allen Kim <allenhwkim@gmail.com>",
   "bugs": {
-    "url": "https://github.com/jsvalley/sticky/issues"
+    "url": "https://github.com/ng2-ui/sticky/issues"
   },
-  "homepage": "https://github.com/jsvalley/sticky#readme",
+  "homepage": "https://github.com/ng2-ui/sticky#readme",
   "dependencies": {
     "@ngui/utils": "^0.8.1"
   },
