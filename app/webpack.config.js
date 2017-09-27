@@ -14,13 +14,12 @@ const config = {
     rules: [
       { 
         test: /\.ts$/, 
+        include: [
+          path.resolve(__dirname, '..', 'src'), 
+          path.resolve(__dirname, '..', 'app')
+        ],
         use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              include: ['src/**/*.ts', 'app/**/*.ts']
-            },
-          },
+          'ts-loader',
           'angular2-template-loader'
         ],
       },
