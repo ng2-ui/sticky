@@ -1,6 +1,6 @@
 'use strict';
 
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, Renderer2 } from '@angular/core';
 import { computedStyle } from '@ngui/utils';
 
 @Directive({
@@ -17,13 +17,25 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
   protected diff: any;
   protected original: any;
 
-  constructor(el: ElementRef) {
+  protected STICKY_CLASSES = {
+    STUCK: 'ngui-sticky-stuck',
+    UNSTUCK: 'ngui-sticky-unstuck',
+    TOP: 'ngui-sticky-top',
+    BOTTOM: 'ngui-sticky-bottom',
+    FILLER: 'ngui-sticky-filler',
+    CONTAINER: 'ngui-sticky-container'
+  };
+
+  constructor(el: ElementRef, protected renderer: Renderer2) {
     this.el = this.el = el.nativeElement;
     this.parentEl = this.el.parentElement;
   }
 
   public ngAfterViewInit(): void {
     this.el.style.boxSizing = 'border-box';
+    this.renderer.addClass(this.el, this.STICKY_CLASSES.UNSTUCK);
+    this.renderer.addClass(this.el, this.STICKY_CLASSES.TOP);
+    this.renderer.addClass(this.parentEl, this.STICKY_CLASSES.CONTAINER);
     
     if (this.stickyAfter) {
       let cetStickyAfterEl = document.querySelector(this.stickyAfter);
@@ -107,6 +119,10 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
         top: 'inherit',
         bottom: 0
       }, dynProps, floatAdjustment);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.STUCK);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.TOP);
+      this.renderer.addClass(this.el, this.STICKY_CLASSES.UNSTUCK);
+      this.renderer.addClass(this.el, this.STICKY_CLASSES.BOTTOM);
     } else if (parentRect.top * -1 + this.original.marginTop + this.stickyOffsetTop > this.original.offsetTop) {
       /**
        * sticky element is in the middle of container
@@ -116,6 +132,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
       if (this.original.float !== 'left' && this.original.float !== 'right' && !this.fillerEl) {
         this.fillerEl = document.createElement('div');
         this.fillerEl.style.height = this.el.offsetHeight + 'px';
+        this.renderer.addClass(this.fillerEl, this.STICKY_CLASSES.FILLER);
         this.parentEl.insertBefore(this.fillerEl, this.el);
       }
 
@@ -125,6 +142,10 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
         top: this.stickyOffsetTop + 'px',
         bottom: 'inherit'
       }, dynProps);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.UNSTUCK);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.TOP);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.BOTTOM);
+      this.renderer.addClass(this.el, this.STICKY_CLASSES.STUCK);
     } else {
       /**
        * sticky element is in the original position
@@ -141,6 +162,10 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
         width: this.original.width,
         left: this.original.left
       }, dynProps);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.STUCK);
+      this.renderer.removeClass(this.el, this.STICKY_CLASSES.BOTTOM);
+      this.renderer.addClass(this.el, this.STICKY_CLASSES.UNSTUCK);
+      this.renderer.addClass(this.el, this.STICKY_CLASSES.TOP);
     }
   }
 }

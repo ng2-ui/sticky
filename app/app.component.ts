@@ -72,6 +72,24 @@ import {Component} from '@angular/core'
     .div-middle div[ngui-sticky] {
       margin: 0;
     }
+    .div-middle div[ngui-sticky].ngui-sticky-stuck {
+      background-color: #339;
+    }
+    .div-middle div[ngui-sticky].ngui-sticky-top {
+      border: 2px solid #0f0;
+    }
+    .div-middle div[ngui-sticky].ngui-sticky-bottom {
+      border: 2px solid #ff0;
+    }
+    @media print {
+      .div-middle div[ngui-sticky] {
+        visibility: hidden;
+        height: 1px;
+      }
+      .ngui-sticky-filler {
+        display: none;
+      }
+    }
  `]
 })
 export class AppComponent {
