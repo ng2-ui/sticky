@@ -1,16 +1,25 @@
-import { ElementRef } from '@angular/core';
-export declare class NguiStickyDirective {
+import { AfterViewInit, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+export declare class NguiStickyDirective implements AfterViewInit, OnDestroy {
+    protected renderer: Renderer2;
     stickyAfter: string;
-    el: HTMLElement;
-    parentEl: HTMLElement;
-    fillerEl: HTMLElement;
-    stickyOffsetTop: number;
-    diff: any;
-    original: any;
-    constructor(el: ElementRef);
+    protected el: HTMLElement;
+    protected parentEl: HTMLElement;
+    protected fillerEl: HTMLElement;
+    protected stickyOffsetTop: number;
+    protected diff: any;
+    protected original: any;
+    protected STICKY_CLASSES: {
+        STUCK: string;
+        UNSTUCK: string;
+        TOP: string;
+        BOTTOM: string;
+        FILLER: string;
+        CONTAINER: string;
+    };
+    constructor(el: ElementRef, renderer: Renderer2);
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
-    attach(): void;
-    detach(): void;
-    scrollHandler: () => void;
+    protected attach(): void;
+    protected detach(): void;
+    protected scrollHandler: () => void;
 }

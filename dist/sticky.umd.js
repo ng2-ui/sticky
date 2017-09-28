@@ -3204,11 +3204,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var utils_1 = __webpack_require__(15);
 var NguiStickyDirective = (function () {
-    function NguiStickyDirective(el) {
+    function NguiStickyDirective(el, renderer) {
         var _this = this;
+        this.renderer = renderer;
         this.stickyOffsetTop = 0;
+        this.STICKY_CLASSES = {
+            STUCK: 'ngui-sticky-stuck',
+            UNSTUCK: 'ngui-sticky-unstuck',
+            TOP: 'ngui-sticky-top',
+            BOTTOM: 'ngui-sticky-bottom',
+            FILLER: 'ngui-sticky-filler',
+            CONTAINER: 'ngui-sticky-container'
+        };
         this.scrollHandler = function () {
-            // let elRect: ClientRect = this.el.getBoundingClientRect();
             var parentRect = _this.el.parentElement.getBoundingClientRect();
             var bodyRect = document.body.getBoundingClientRect();
             var dynProps;
@@ -3221,16 +3229,13 @@ var NguiStickyDirective = (function () {
                 dynProps = { left: left + 'px' };
             }
             else {
-                //console.log('parentRect..............', parentRect.width);
                 dynProps = { width: parentRect.width + 'px' };
             }
-            //console.log('dynProps', dynProps);
             if (_this.original.marginTop + _this.original.marginBottom +
                 _this.original.boundingClientRect.height + _this.stickyOffsetTop >= parentRect.bottom) {
                 /**
                  * sticky element reached to the bottom of the container
                  */
-                // console.log('case 1 (absolute)', parentRect.bottom, this.original.marginBottom);
                 var floatAdjustment = _this.original.float === 'right' ? { right: 0 } :
                     _this.original.float === 'left' ? { left: 0 } : {};
                 Object.assign(_this.el.style, {
@@ -3239,16 +3244,20 @@ var NguiStickyDirective = (function () {
                     top: 'inherit',
                     bottom: 0
                 }, dynProps, floatAdjustment);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.STUCK);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.TOP);
+                _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.UNSTUCK);
+                _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.BOTTOM);
             }
             else if (parentRect.top * -1 + _this.original.marginTop + _this.stickyOffsetTop > _this.original.offsetTop) {
                 /**
                  * sticky element is in the middle of container
                  */
-                //console.log('case 2 (fixed)', parentRect.top * -1, this.original.marginTop, this.original.offsetTop);
                 // if not floating, add an empty filler element, since the original elements becames 'fixed'
                 if (_this.original.float !== 'left' && _this.original.float !== 'right' && !_this.fillerEl) {
                     _this.fillerEl = document.createElement('div');
                     _this.fillerEl.style.height = _this.el.offsetHeight + 'px';
+                    _this.renderer.addClass(_this.fillerEl, _this.STICKY_CLASSES.FILLER);
                     _this.parentEl.insertBefore(_this.fillerEl, _this.el);
                 }
                 Object.assign(_this.el.style, {
@@ -3257,12 +3266,15 @@ var NguiStickyDirective = (function () {
                     top: _this.stickyOffsetTop + 'px',
                     bottom: 'inherit'
                 }, dynProps);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.UNSTUCK);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.TOP);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.BOTTOM);
+                _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.STUCK);
             }
             else {
                 /**
                  * sticky element is in the original position
                  */
-                // console.log('case 3 (original)');
                 if (_this.fillerEl) {
                     _this.parentEl.removeChild(_this.fillerEl); //IE11 does not work with el.remove()
                     _this.fillerEl = undefined;
@@ -3275,6 +3287,10 @@ var NguiStickyDirective = (function () {
                     width: _this.original.width,
                     left: _this.original.left
                 }, dynProps);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.STUCK);
+                _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.BOTTOM);
+                _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.UNSTUCK);
+                _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.TOP);
             }
         };
         this.el = this.el = el.nativeElement;
@@ -3282,6 +3298,9 @@ var NguiStickyDirective = (function () {
     }
     NguiStickyDirective.prototype.ngAfterViewInit = function () {
         this.el.style.boxSizing = 'border-box';
+        this.renderer.addClass(this.el, this.STICKY_CLASSES.UNSTUCK);
+        this.renderer.addClass(this.el, this.STICKY_CLASSES.TOP);
+        this.renderer.addClass(this.parentEl, this.STICKY_CLASSES.CONTAINER);
         if (this.stickyAfter) {
             var cetStickyAfterEl = document.querySelector(this.stickyAfter);
             if (cetStickyAfterEl) {
@@ -3337,7 +3356,7 @@ NguiStickyDirective = __decorate([
     core_1.Directive({
         selector: '[ngui-sticky]'
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
+    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer2])
 ], NguiStickyDirective);
 exports.NguiStickyDirective = NguiStickyDirective;
 
