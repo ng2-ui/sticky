@@ -12,7 +12,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
   protected el: HTMLElement;
   protected parentEl: HTMLElement;
   protected fillerEl: HTMLElement;
-  protected stickyOffsetTop: number = 0;
+  protected stickyAfterElement: HTMLElement;
 
   protected diff: any;
   protected original: any;
@@ -38,10 +38,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
     this.renderer.addClass(this.parentEl, this.STICKY_CLASSES.CONTAINER);
     
     if (this.stickyAfter) {
-      let cetStickyAfterEl = document.querySelector(this.stickyAfter);
-      if (cetStickyAfterEl) {
-        this.stickyOffsetTop = cetStickyAfterEl.getBoundingClientRect().bottom;
-      }
+      this.stickyAfterElement = document.querySelector(this.stickyAfter) as HTMLElement;
     }
 
     // set the parent relatively positioned
@@ -93,6 +90,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
   protected scrollHandler = () => {
     let parentRect: ClientRect = this.el.parentElement.getBoundingClientRect();
     let bodyRect: ClientRect = document.body.getBoundingClientRect();
+    let stickyOffsetTop = this.stickyAfterElement ? this.stickyAfterElement.getBoundingClientRect().bottom : 0;
     let dynProps;
 
     if (this.original.float === 'right') {
@@ -106,7 +104,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
     }
 
     if (this.original.marginTop + this.original.marginBottom +
-      this.original.boundingClientRect.height + this.stickyOffsetTop >= parentRect.bottom) {
+      this.original.boundingClientRect.height + stickyOffsetTop >= parentRect.bottom) {
       /**
        * sticky element reached to the bottom of the container
        */
@@ -123,7 +121,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
       this.renderer.removeClass(this.el, this.STICKY_CLASSES.TOP);
       this.renderer.addClass(this.el, this.STICKY_CLASSES.UNSTUCK);
       this.renderer.addClass(this.el, this.STICKY_CLASSES.BOTTOM);
-    } else if (parentRect.top * -1 + this.original.marginTop + this.stickyOffsetTop > this.original.offsetTop) {
+    } else if (parentRect.top * -1 + this.original.marginTop + stickyOffsetTop > this.original.offsetTop) {
       /**
        * sticky element is in the middle of container
        */
@@ -139,7 +137,7 @@ export class NguiStickyDirective implements AfterViewInit, OnDestroy {
       Object.assign(this.el.style, {
         position: 'fixed', //fixed is a lot smoother than absolute
         float: 'none',
-        top: this.stickyOffsetTop + 'px',
+        top: stickyOffsetTop + 'px',
         bottom: 'inherit'
       }, dynProps);
       this.renderer.removeClass(this.el, this.STICKY_CLASSES.UNSTUCK);

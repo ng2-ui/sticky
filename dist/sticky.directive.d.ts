@@ -5,7 +5,7 @@ export declare class NguiStickyDirective implements AfterViewInit, OnDestroy {
     protected el: HTMLElement;
     protected parentEl: HTMLElement;
     protected fillerEl: HTMLElement;
-    protected stickyOffsetTop: number;
+    protected stickyAfterElement: HTMLElement;
     protected diff: any;
     protected original: any;
     protected STICKY_CLASSES: {
