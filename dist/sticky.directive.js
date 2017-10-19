@@ -2,11 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var utils_1 = require("@ngui/utils");
-var NguiStickyDirective = (function () {
+var NguiStickyDirective = /** @class */ (function () {
     function NguiStickyDirective(el, renderer) {
         var _this = this;
         this.renderer = renderer;
-        this.stickyOffsetTop = 0;
         this.STICKY_CLASSES = {
             STUCK: 'ngui-sticky-stuck',
             UNSTUCK: 'ngui-sticky-unstuck',
@@ -18,6 +17,7 @@ var NguiStickyDirective = (function () {
         this.scrollHandler = function () {
             var parentRect = _this.el.parentElement.getBoundingClientRect();
             var bodyRect = document.body.getBoundingClientRect();
+            var stickyOffsetTop = _this.stickyAfterElement ? _this.stickyAfterElement.getBoundingClientRect().bottom : 0;
             var dynProps;
             if (_this.original.float === 'right') {
                 var right = bodyRect.right - parentRect.right + _this.original.marginRight;
@@ -31,7 +31,7 @@ var NguiStickyDirective = (function () {
                 dynProps = { width: parentRect.width + 'px' };
             }
             if (_this.original.marginTop + _this.original.marginBottom +
-                _this.original.boundingClientRect.height + _this.stickyOffsetTop >= parentRect.bottom) {
+                _this.original.boundingClientRect.height + stickyOffsetTop >= parentRect.bottom) {
                 /**
                  * sticky element reached to the bottom of the container
                  */
@@ -48,7 +48,7 @@ var NguiStickyDirective = (function () {
                 _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.UNSTUCK);
                 _this.renderer.addClass(_this.el, _this.STICKY_CLASSES.BOTTOM);
             }
-            else if (parentRect.top * -1 + _this.original.marginTop + _this.stickyOffsetTop > _this.original.offsetTop) {
+            else if (parentRect.top * -1 + _this.original.marginTop + stickyOffsetTop > _this.original.offsetTop) {
                 /**
                  * sticky element is in the middle of container
                  */
@@ -62,7 +62,7 @@ var NguiStickyDirective = (function () {
                 Object.assign(_this.el.style, {
                     position: 'fixed',
                     float: 'none',
-                    top: _this.stickyOffsetTop + 'px',
+                    top: stickyOffsetTop + 'px',
                     bottom: 'inherit'
                 }, dynProps);
                 _this.renderer.removeClass(_this.el, _this.STICKY_CLASSES.UNSTUCK);
@@ -101,10 +101,7 @@ var NguiStickyDirective = (function () {
         this.renderer.addClass(this.el, this.STICKY_CLASSES.TOP);
         this.renderer.addClass(this.parentEl, this.STICKY_CLASSES.CONTAINER);
         if (this.stickyAfter) {
-            var cetStickyAfterEl = document.querySelector(this.stickyAfter);
-            if (cetStickyAfterEl) {
-                this.stickyOffsetTop = cetStickyAfterEl.getBoundingClientRect().bottom;
-            }
+            this.stickyAfterElement = document.querySelector(this.stickyAfter);
         }
         // set the parent relatively positioned
         var allowedPositions = ['absolute', 'fixed', 'relative'];
@@ -145,20 +142,20 @@ var NguiStickyDirective = (function () {
         window.removeEventListener('scroll', this.scrollHandler);
         window.removeEventListener('resize', this.scrollHandler);
     };
+    NguiStickyDirective.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[ngui-sticky]'
+                },] },
+    ];
+    /** @nocollapse */
+    NguiStickyDirective.ctorParameters = function () { return [
+        { type: core_1.ElementRef, },
+        { type: core_1.Renderer2, },
+    ]; };
+    NguiStickyDirective.propDecorators = {
+        'stickyAfter': [{ type: core_1.Input, args: ['sticky-after',] },],
+    };
     return NguiStickyDirective;
 }());
-NguiStickyDirective.decorators = [
-    { type: core_1.Directive, args: [{
-                selector: '[ngui-sticky]'
-            },] },
-];
-/** @nocollapse */
-NguiStickyDirective.ctorParameters = function () { return [
-    { type: core_1.ElementRef, },
-    { type: core_1.Renderer2, },
-]; };
-NguiStickyDirective.propDecorators = {
-    'stickyAfter': [{ type: core_1.Input, args: ['sticky-after',] },],
-};
 exports.NguiStickyDirective = NguiStickyDirective;
 //# sourceMappingURL=sticky.directive.js.map
