@@ -58,6 +58,12 @@ For full example, please check out `test` directory to see the example of;
         <div>After</div>
         <div>Another</div>
       </div>
+      
+## Offset after some tag or class
+
+      <div class="top-header">Header Container</div>
+      <!-- now ngui-sticy will become sticky after top-hader class -->
+      <div ngui-sticky sticky-after=".top-header"></div>
 
 ## **ng2-ui** welcomes new members and contributors
 
