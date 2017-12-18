@@ -1,6 +1,9 @@
 # @ngui/sticky
 position: sticky implementaion in Angular2
 
+## NOTE: NOT-MATAINED. 
+Accepting volunteers and ready to transfer full power to who wants to maintain this repo.
+
 ## IMPORTANT NOTICE
 After 0.7.0 or higher, ng2-sticky has been changed to @ngui/sticky. Here are the changes;
 
